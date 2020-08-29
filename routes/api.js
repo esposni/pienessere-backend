@@ -2,8 +2,8 @@ const express = require('express');
 
 const router = express.Router();
 
-const PoesiaPost = require('../models/PoesiaPost');
-const RicettaPost = require('../models/RicettaPost');
+const PoesiaPost = require('../models/poesiaPost');
+const RicettaPost = require('../models/ricettaPost');
 
 
 // Routes
