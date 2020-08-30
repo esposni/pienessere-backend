@@ -7,6 +7,7 @@ const RicettaPostSchema = new Schema({
     title: String,
     desc: String,
     ricetta: String,
+    img:String,
     preparazione:String,
     date: {
         type: String,

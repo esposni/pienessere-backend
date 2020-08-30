@@ -11,6 +11,7 @@ export default class Ricetta extends React.Component {
     pwd:"",
     title: "",
     desc:"",
+    img:"",
     ricetta: "",
     preparazione: "",
     posts: []
@@ -46,6 +47,7 @@ export default class Ricetta extends React.Component {
       pwd: this.state.pwd,
       title: this.state.title,
       desc: this.state.desc,
+      img: this.state.img,
       ricetta: this.state.ricetta,
       preparazione:this.state.preparazione
     };
@@ -97,6 +99,7 @@ export default class Ricetta extends React.Component {
       title: "",
       desc: "",
       ricetta: "",
+      img:"",
       preparazione:""
     });
   };
@@ -108,6 +111,7 @@ export default class Ricetta extends React.Component {
     return posts.map((post, index) => (
       <div key={index} className="blog-post__display">
         <h3>{post.title}</h3>
+        <img src={post.img} style={{width:"15em",height:"20em"}} alt=""/>
         <p>{post.desc}</p>
         <h5 align="left"><strong>Ricetta</strong></h5>
         <div>
@@ -130,9 +134,30 @@ export default class Ricetta extends React.Component {
     ));
   };
 
+  _handleImageChange(e) {
+    e.preventDefault();
+
+    let reader = new FileReader();
+    let file = e.target.files[0];
+
+    reader.onloadend = () => {
+      this.setState({
+        img: reader.result
+      });
+    }
+
+    reader.readAsDataURL(file)
+  }
   render() {
 
     console.log('State: ', this.state);
+    let {img} = this.state;
+    let $imagePreview = null;
+    if (img) {
+      $imagePreview = (<img src={img} alt=""/>);
+    } else {
+      $imagePreview = (<div className="previewText">Please select an Image for Preview</div>);
+    }
 
     //JSX
     return(
@@ -164,8 +189,9 @@ export default class Ricetta extends React.Component {
               value={this.state.desc}
               onChange={this.handleChange}
             >
-              
             </textarea>
+            </div>
+            <div className="form-input">
             <textarea
               placeholder="ricetta"
               name="ricetta"
@@ -174,8 +200,9 @@ export default class Ricetta extends React.Component {
               value={this.state.ricetta}
               onChange={this.handleChange}
             >
-              
             </textarea>
+            </div>
+            <div className="form-input">
             <textarea
               placeholder="preparazione"
               name="preparazione"
@@ -183,9 +210,17 @@ export default class Ricetta extends React.Component {
               rows="10"
               value={this.state.preparazione}
               onChange={this.handleChange}
-            >
-              
+            >    
             </textarea>
+            </div>
+          
+          <div className="form-input">
+              <input name="img"
+              type="file" 
+              onChange={(e)=>this._handleImageChange(e)} />
+               <div className="imgPreview">
+                  {$imagePreview}
+              </div>
           </div>
 
           <button>Submit</button>

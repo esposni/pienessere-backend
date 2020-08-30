@@ -24,6 +24,7 @@ router.post('/save/poesia', (req, res) => {
     const payload_data = {
         intro: data.intro,
         desc: data.desc,
+        img:data.img,
         poesia: data.poesia
       };
 
@@ -87,6 +88,7 @@ router.post('/save/ricetta', (req, res) => {
     const payload_data = {
         title:data.title,
         desc: data.desc,
+        img:data.img,
         ricetta: data.ricetta,
         preparazione:data.preparazione
       };

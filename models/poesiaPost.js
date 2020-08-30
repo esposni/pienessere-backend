@@ -7,6 +7,7 @@ const PoesiaPostSchema = new Schema({
     intro: String,
     desc: String,
     poesia: String,
+    img:String,
     date: {
         type: String,
         default: Date.now()

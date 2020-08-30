@@ -3,6 +3,7 @@ import axios from 'axios';
 
 
 import './App.css';
+// import ImageUpload from "./imgUpload"
 
 
 export default class Poesia extends React.Component {
@@ -10,6 +11,7 @@ export default class Poesia extends React.Component {
   state = {
     pwd:"",
     intro: '',
+    img:"",
     desc:"",
     poesia: "",
     posts: []
@@ -19,6 +21,7 @@ export default class Poesia extends React.Component {
     this.getBlogPost();
   };
 
+  
 
   getBlogPost = () => {
     axios.get('/api/poesia')
@@ -44,6 +47,7 @@ export default class Poesia extends React.Component {
     const payload = {
       pwd: this.state.pwd,
       intro: this.state.intro,
+      img:this.state.img,
       desc: this.state.desc,
       poesia: this.state.poesia
     };
@@ -93,6 +97,7 @@ export default class Poesia extends React.Component {
     this.setState({
       pwd:"",
       intro: '',
+      img:"",
       desc:"",
       poesia: "",
     });
@@ -108,6 +113,7 @@ export default class Poesia extends React.Component {
         <h3>{`"`+post.intro+`"`}</h3>
         <p>{post.desc}</p>
         <div align="center">
+        <img src={post.img} style={{width:"15em",height:"20em"}} alt=""/>
       {post.poesia.split("\n").map((frase,index2)=>{
         return( 
           <p key={index+""+index2}>{frase}</p> 
@@ -119,9 +125,32 @@ export default class Poesia extends React.Component {
     ));
   };
 
+  _handleImageChange(e) {
+    e.preventDefault();
+
+    let reader = new FileReader();
+    let file = e.target.files[0];
+
+    reader.onloadend = () => {
+      this.setState({
+        img: reader.result
+      });
+    }
+
+    reader.readAsDataURL(file)
+  }
+
+
   render() {
 
     console.log('State: ', this.state);
+    let {img} = this.state;
+    let $imagePreview = null;
+    if (img) {
+      $imagePreview = (<img src={img} alt=""/>);
+    } else {
+      $imagePreview = (<div className="previewText">Please select an Image for Preview</div>);
+    }
 
     //JSX
     return(
@@ -168,7 +197,14 @@ export default class Poesia extends React.Component {
               
             </textarea>
           </div>
-
+          <div className="form-input">
+              <input name="img"
+              type="file" 
+              onChange={(e)=>this._handleImageChange(e)} />
+               <div className="imgPreview">
+                  {$imagePreview}
+              </div>
+          </div>
           <button>Submit</button>
         </form>
 
